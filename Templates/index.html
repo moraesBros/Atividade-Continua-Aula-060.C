@@ -4,35 +4,19 @@
   <meta charset="UTF-8">
   <title>Flasky Moraes</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <style>
-    /* Estilos adicionais para garantir o alinhamento */
-    .container {
-      padding-left: 20px;
-    }
-    .content-wrapper {
-      margin-left: 0;
-      max-width: 100%;
-    }
-    .greeting { margin: 0; }
-    .welcome-note { margin-top: 6px; color: #333; font-weight: 500; }
-    .separator { height: 1px; background: #e0e0e0; margin: 16px 0; }
-    .prompt { margin: 12px 0 6px; }
-    .input-name { display: block; padding: 8px; width: 280px; margin-bottom: 8px; }
-    .btn-submit { padding: 8px 12px; }
-    .error { color: #c00; margin-bottom: 8px; }
-  </style>
 </head>
 <body>
   <nav class="navbar">
-    <a href="{{ url_for('index') }}" class="brand">
-      Avaliação contínua: <b>Aula 060.C</b>
-    </a>
-    <a href="#" class="nav-link">Home</a>
+    <div class="nav-container">
+      <a href="{{ url_for('index') }}" class="brand">
+        Avaliação contínua: <b>Aula 060.C</b>
+      </a>
+      <a href="#" class="nav-link">Home</a>
+    </div>
   </nav>
 
   <div class="container">
     <div class="content-wrapper">
-      <!-- Mensagens acima do separador -->
       <h1 class="greeting">
         {% if name %}
           Ola, {{ name }}!
@@ -45,10 +29,8 @@
         <div class="welcome-note">Prazer em conhecê-lo!</div>
       {% endif %}
 
-      <!-- separador -->
       <div class="separator"></div>
 
-      <!-- Formulário único -->
       <form method="post" novalidate>
         <p class="prompt">Qual o seu nome?</p>
         <input
