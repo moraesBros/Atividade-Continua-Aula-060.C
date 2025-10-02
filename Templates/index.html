@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Flasky Moraes</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    /* Estilos adicionais para garantir o alinhamento */
+    .container {
+      padding-left: 20px; /* Ajuste este valor conforme necessário para alinhar com a navbar */
+    }
+    
+    /* Se precisar de mais controle, você pode usar isso: */
+    .content-wrapper {
+      margin-left: 0; /* Ajuste para igualar a margem da navbar */
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+      <a href="{{ url_for('index') }}" class="brand">
+    Avaliação contínua: <b>Aula 060.C</b>
+  </a>
+    <a href="#" class="nav-link">Home</a>
+  </nav>
+
+  <div class="container">
+    <div class="content-wrapper">
+      <!-- Mensagens acima do separador -->
+      <h1 class="greeting">
+        {% if name %}
+          Ola, {{ name }}!
+        {% else %}
+          Ola, Estranho!
+        {% endif %}
+      </h1>
+
+      <h2 class="greeting">
+        {% if institution %}
+          A sua instituição de ensino é {{ institution }}!
+        {% else %}
+          A sua instituição de ensino é Nome
+        {% endif %}
+      </h2>
+
+      <h2 class="greeting">
+        {% if discipline %}
+          Está cursando a disciplina de {{ discipline }}!
+        {% else %}
+          Está cursando a disciplina de Nome
+        {% endif %}
+      </h2>
+
+      <!-- <h3> com a mesma classe de alinhamento dos prompts -->
+      <h3 class="prompt">
+        O IP do computador remoto é: {{ remote_ip or 'Nome' }}
+      </h3>
+      <h3 class="prompt">
+        O host da aplicação é: {{ host_name or 'Nome' }}
+      </h3>
+
+      <!-- separador -->
+      <div class="separator"></div>
+
+      <!-- Formulário único -->
+      <form method="post" novalidate>
+        <p class="prompt">Qual o seu nome?</p>
+        <input
+          type="text"
+          name="name"
+          placeholder="Digite seu nome"
+          class="input-name"
+          value="{{ name }}"
+        >
+        {% if errors.name %}
+          <div class="error">{{ errors.name }}</div>
+        {% endif %}
+
+        <p class="prompt">Qual é a sua instituição de ensino?</p>
+        <input
+          type="text"
+          name="institution"
+          placeholder="Digite sua instituição"
+          class="input-name"
+          value="{{ institution }}"
+        >
+        {% if errors.institution %}
+          <div class="error">{{ errors.institution }}</div>
+        {% endif %}
+
+        <p class="prompt">Qual é a sua disciplina?</p>
+        <input
+          type="text"
+          name="discipline"
+          placeholder="Digite sua disciplina"
+          class="input-name"
+          value="{{ discipline }}"
+        >
+        {% if errors.discipline %}
+          <div class="error">{{ errors.discipline }}</div>
+        {% endif %}
+
+        <button type="submit" class="btn-submit">Enviar tudo</button>
+      </form>
+
+     <h5 class="prompt">
+    The local date and time is <span id="local-time">--</span>.
+    </h5>
+    <h5 class="prompt">
+      That was <span id="elapsed-time">0s</span> ago.
+    </h5>
+    </div>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // referências aos spans
+    const localTimeEl   = document.getElementById('local-time');
+    const elapsedTimeEl = document.getElementById('elapsed-time');
+
+    // instante em que a página carregou
+    const startTime = new Date();
+
+    // função que atualiza ambos campos
+    function updateClocks() {
+      const now = new Date();
+
+      // formata mês dia e ano
+      const monthName = now.toLocaleString('default', { month: 'long' });
+      const day       = now.getDate();
+      const year      = now.getFullYear();
+      const hh        = String(now.getHours()).padStart(2, '0');
+      const mm        = String(now.getMinutes()).padStart(2, '0');
+
+      localTimeEl.textContent = `${monthName} ${day}, ${year} ${hh}:${mm}`;
+
+      // calcula diferença em segundos
+      const diffMs       = now - startTime;
+      const totalSec     = Math.floor(diffMs / 1000);
+      const hrs          = Math.floor(totalSec / 3600);
+      const mins         = Math.floor((totalSec % 3600) / 60);
+      const secs         = totalSec % 60;
+
+      // monta string de elapsed
+      let elapsedStr = '';
+      if (hrs) elapsedStr += `${hrs}h `;
+      if (mins) elapsedStr += `${mins}m `;
+      elapsedStr += `${secs}s`;
+
+      elapsedTimeEl.textContent = elapsedStr;
+    }
+
+    // primeira chamada e agendamento a cada segundo
+    updateClocks();
+    setInterval(updateClocks, 1000);
+  });
+  </script>
+</body>
+</html>
