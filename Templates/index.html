@@ -19,9 +19,9 @@
     <div class="content-wrapper">
       <h1 class="greeting">
         {% if name %}
-          Ola, {{ name }}!
+          Olá, {{ name }}!
         {% else %}
-          Ola, Estranho!
+          Olá, Estranho!
         {% endif %}
       </h1>
 
@@ -44,10 +44,22 @@
           <div class="error">{{ errors.name }}</div>
         {% endif %}
 
+        <p class="prompt">Você é?</p>
+        <label class="select-wrapper">
+          <select name="role" class="select-role" required>
+            <option value="" disabled selected>Escolha</option>
+            <option value="Moderador">Moderador</option>
+            <option value="Administrador">Administrador</option>
+            <option value="Usuário">Usuário</option>
+          </select>
+        </label>
+        {% if errors.role %}
+          <div class="error">{{ errors.role }}</div>
+        {% endif %}
+
         <button type="submit" class="btn-submit">Enviar tudo</button>
       </form>
     </div>
   </div>
 </body>
 </html>
-
