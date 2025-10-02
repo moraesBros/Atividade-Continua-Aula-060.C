@@ -1,1 +1,15 @@
+# Pacotes principais da aplicação
+Flask==2.1.2
 
+# Estilização e tempo
+Flask-Bootstrap==3.3.7.1
+Flask-Moment==1.0.2
+
+# Formulários e validação
+Flask-WTF==1.0.1
+
+# Banco de dados e migrações
+Flask-SQLAlchemy==2.5.1
+Flask-Migrate==3.1.0
+
+#pip install -r requirements.txt
