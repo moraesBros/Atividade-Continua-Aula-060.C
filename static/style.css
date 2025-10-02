@@ -1,11 +1,11 @@
 :root {
-  --side-margin-percent: 25%; /* 1/4 da largura em cada lado */
-  --content-width-percent: 50%; /* centro ocupa 50% */
+  --side-margin-percent: 25%;
+  --content-width-percent: 50%;
   --nav-height: 56px;
   --brand-font-size: 16px;
-  --nav-link-color: #cfcfcf; /* cinza claro padrão */
-  --nav-link-hover: #ffffff; /* branco ao passar o mouse */
-  --nav-bg-color: #000000; /* faixa superior preta sólida */
+  --nav-link-color: #cfcfcf;
+  --nav-link-hover: #ffffff;
+  --nav-bg-color: #000000;
 }
 
 /* Reset básico */
@@ -17,7 +17,7 @@ body {
   background: #fff;
 }
 
-/* Navbar (barra inteira) com cor sólida preta */
+/* Navbar */
 .navbar {
   width: 100%;
   height: var(--nav-height);
@@ -36,25 +36,21 @@ body {
   gap: 12px;
 }
 
-/* Marca e link da navbar: cinza claro por padrão e branco no hover */
+/* Marca e link da navbar */
 .brand {
   text-decoration: none;
   color: var(--nav-link-color);
   font-size: var(--brand-font-size);
   transition: color 150ms ease-in-out;
 }
-.brand:hover {
-  color: var(--nav-link-hover);
-}
+.brand:hover { color: var(--nav-link-hover); }
 
 .nav-link {
   text-decoration: none;
   color: var(--nav-link-color);
   transition: color 150ms ease-in-out;
 }
-.nav-link:hover {
-  color: var(--nav-link-hover);
-}
+.nav-link:hover { color: var(--nav-link-hover); }
 
 /* Container central do conteúdo (alinhado com a marca) */
 .container {
@@ -89,8 +85,9 @@ body {
   margin: 12px 0 6px;
 }
 
-/* Inputs e botões responsivos dentro da área central */
-.input-name {
+/* Inputs, select e botões responsivos dentro da área central */
+.input-name,
+.select-role {
   display: block;
   padding: 8px;
   width: 100%;
@@ -98,8 +95,22 @@ body {
   margin-bottom: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  background: #fff;
+  font-size: 14px;
+  color: #111;
 }
 
+/* Aparência do select com seta nativa; mantém comportamento padrão do navegador */
+.select-role {
+  -webkit-appearance: menulist;
+  appearance: menulist;
+  background-image: none;
+}
+
+/* Envolvente opcional para personalizações futuras */
+.select-wrapper { display: block; }
+
+/* Botão de envio */
 .btn-submit {
   padding: 8px 12px;
   cursor: pointer;
@@ -109,6 +120,7 @@ body {
   border-radius: 4px;
 }
 
+/* Erros */
 .error {
   color: #c00;
   margin-bottom: 8px;
