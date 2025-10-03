@@ -21,7 +21,6 @@ def read_entries():
             line = line.strip()
             if not line:
                 continue
-            # formato armazenado: nome|role
             parts = line.split("|", 1)
             if len(parts) == 2:
                 name, role = parts[0].strip(), parts[1].strip()
@@ -37,8 +36,29 @@ def append_entry(name, role):
     with open(NAMES_FILE, "a", encoding="utf-8") as f:
         f.write(f"{safe_name}|{safe_role}\n")
 
+def categorize_entries(entries):
+    usuarios = []
+    moderadores = []
+    administradores = []
+    for e in entries:
+        role = (e.get("role") or "").strip()
+        name = e.get("name", "").strip()
+        if role.lower() == "administrador":
+            administradores.append(name)
+        elif role.lower() == "moderador":
+            moderadores.append(name)
+        else:
+            # inclui role == "" e role == "Usuário" e qualquer outro valor que não seja moderador/administrador
+            usuarios.append(name)
+    return {
+        "Usuário": usuarios,
+        "Moderador": moderadores,
+        "Administrador": administradores
+    }
+
 def generate_lista_template(entries):
     count = len(entries)
+    groups = categorize_entries(entries)
     os.makedirs(os.path.dirname(GENERATED_TEMPLATE), exist_ok=True)
     with open(GENERATED_TEMPLATE, "w", encoding="utf-8") as f:
         f.write("""<!DOCTYPE html>
@@ -54,6 +74,9 @@ def generate_lista_template(entries):
     th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
     th { background: #f5f5f5; }
     .count { margin-top: 12px; font-weight: 600; }
+    .group { margin-top: 18px; }
+    .group p.title { font-weight: 700; margin: 6px 0; }
+    .group ul { margin: 6px 0 0 18px; padding: 0; }
   </style>
 </head>
 <body>
@@ -71,42 +94,55 @@ def generate_lista_template(entries):
         f.write(f"""    </tbody>
   </table>
   <p class="count">Quantidade: {count}</p>
-</body>
-</html>""")
+""")
+        # adicionar seções agrupadas abaixo
+        for group_name in ["Usuário", "Moderador", "Administrador"]:
+            names = groups.get(group_name, [])
+            f.write(f'  <div class="group"><p class="title">{group_name}</p>\n')
+            if names:
+                f.write("    <ul>\n")
+                for n in names:
+                    safe = n.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+                    f.write(f"      <li>{safe}</li>\n")
+                f.write("    </ul>\n")
+            else:
+                f.write("    <p>Nenhum registro</p>\n")
+            f.write("  </div>\n")
+        f.write("</body>\n</html>")
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     errors = {}
-    form_name = ""
-    form_role = ""
+    name = ""
     if request.method == "POST":
-        form_name = request.form.get("name", "").strip()
-        form_role = request.form.get("role", "").strip()
-
-        if form_name:
-            if len(form_name) < 2:
-                errors["name"] = "Nome muito curto."
-            else:
-                append_entry(form_name, form_role)
-                entries = read_entries()
-                generate_lista_template(entries)
-                flash("Nome gravado com sucesso.", "success")
-                form_name = ""
-                # manter role selecionado vazio após envio
-                form_role = ""
-        else:
-            # manter comportamento anterior: não exigir nome
-            pass
-
+        name = request.form.get("name", "").strip()
+        role = request.form.get("role", "").strip()
+        # validação: name obrigatório; role pode ser vazio (será tratado como Usuário)
+        if not name:
+            errors["name"] = "Nome é obrigatório."
+        # não tornar role obrigatório para permitir gravação sem função
+        if not errors:
+            append_entry(name, role)
+            flash("Dados enviados com sucesso!")
+            return redirect(url_for("index"))
     entries = read_entries()
-    count = len(entries)
+    groups = categorize_entries(entries)
+    # gerar lista.html atualizada
+    generate_lista_template(entries)
+    return render_template(
+        "index.html",
+        name=name,
+        errors=errors,
+        entries=entries,
+        count=len(entries),
+        groups=groups
+    )
 
-    return render_template("index.html",
-                           name="",
-                           role="",
-                           errors=errors,
-                           count=count,
-                           entries=entries)
+@app.route("/lista")
+def lista():
+    entries = read_entries()
+    generate_lista_template(entries)
+    return render_template("lista.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
