@@ -100,15 +100,12 @@ body {
   color: #111;
 }
 
-/* Aparência do select com seta nativa; mantém comportamento padrão do navegador */
+/* Aparência do select com seta nativa */
 .select-role {
   -webkit-appearance: menulist;
   appearance: menulist;
   background-image: none;
 }
-
-/* Envolvente opcional para personalizações futuras */
-.select-wrapper { display: block; }
 
 /* Botão de envio */
 .btn-submit {
@@ -120,13 +117,30 @@ body {
   border-radius: 4px;
 }
 
+/* Tabela de nomes */
+.list-table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 720px;
+  margin-top: 8px;
+}
+.list-table th,
+.list-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+.list-table th {
+  background: #f5f5f5;
+}
+
 /* Erros */
 .error {
   color: #c00;
   margin-bottom: 8px;
 }
 
-/* Responsividade: em telas menores reduz as margens laterais mantendo proporção visual */
+/* Responsividade */
 @media (max-width: 1200px) {
   :root {
     --side-margin-percent: 18%;
