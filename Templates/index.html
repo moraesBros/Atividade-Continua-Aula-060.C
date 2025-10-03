@@ -85,9 +85,51 @@
 
         <h2>Relação de funções cadastradas</h2>
         <p>Quantidade: 3</p>
-        <p><b>Usuário</b></p>
-        <p><b>Moderador</b></p>
-        <p><b>Administrador</b></p>
+
+        <h2>Relação de funções cadastradas</h2>
+<p>Quantidade: {{ count }}</p>
+
+<div class="grouped-lists">
+  <div class="group">
+    <p><b>Usuário</b></p>
+    {% if groups['Usuário'] %}
+      <ul>
+        {% for n in groups['Usuário'] %}
+          <li>{{ n }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Nenhum registro</p>
+    {% endif %}
+  </div>
+
+  <div class="group">
+    <p><b>Moderador</b></p>
+    {% if groups['Moderador'] %}
+      <ul>
+        {% for n in groups['Moderador'] %}
+          <li>{{ n }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Nenhum registro</p>
+    {% endif %}
+  </div>
+
+  <div class="group">
+    <p><b>Administrador</b></p>
+    {% if groups['Administrador'] %}
+      <ul>
+        {% for n in groups['Administrador'] %}
+          <li>{{ n }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Nenhum registro</p>
+    {% endif %}
+  </div>
+</div>
+
       </div>
 
     </div>
