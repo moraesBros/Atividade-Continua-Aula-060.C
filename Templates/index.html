@@ -38,7 +38,7 @@
           name="name"
           placeholder="Digite seu nome"
           class="input-name"
-          value="{{ name or '' }}"
+          value=""
         >
         {% if errors.name %}
           <div class="error">{{ errors.name }}</div>
@@ -59,6 +59,37 @@
 
         <button type="submit" class="btn-submit">Enviar tudo</button>
       </form>
+
+      <h2>Relação de usuários cadastrados</h2>
+
+      <div style="margin-top:16px;">
+        <p>Quantidade: <strong>{{ count }}</strong></p>
+
+        <p>Nome Função</p>
+        <table class="list-table">
+          <thead>
+            <tr><th>Nome</th><th>Função</th></tr>
+          </thead>
+          <tbody>
+            {% for e in entries %}
+              <tr>
+                <td>{{ e.name }}</td>
+                <td>{{ e.role }}</td>
+              </tr>
+            {% endfor %}
+            {% if entries|length == 0 %}
+              <tr><td colspan="2">Nenhum registro</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+
+        <h2>Relação de funções cadastradas</h2>
+        <p>Quantidade: 3</p>
+        <p><b>Usuário</b></p>
+        <p><b>Moderador</b></p>
+        <p><b>Administrador</b></p>
+      </div>
+
     </div>
   </div>
 </body>
